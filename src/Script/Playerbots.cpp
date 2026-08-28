@@ -18,6 +18,7 @@
 #include "Playerbots.h"
 
 #include "BattlefieldScript.h"
+#include "CityBotMgr.h"
 #include "Channel.h"
 #include "Config.h"
 #include "DatabaseEnv.h"
@@ -110,12 +111,16 @@ public:
                     "|cffcccccchttps://github.com/mod-playerbots/mod-playerbots|r");
             }
 
-            if (sPlayerbotAIConfig.enabled || sPlayerbotAIConfig.randomBotAutologin)
+            if (sPlayerbotAIConfig.randomBotAutologin)
             {
                 std::string maxAllowedBotCount = std::to_string(sRandomPlayerbotMgr.GetMaxAllowedBotCount());
 
                 ChatHandler(player->GetSession()).SendSysMessage(
                     "|cff00ff00Playerbots:|r The server is configured with " + maxAllowedBotCount + " bots.");
+            }
+            else if (sPlayerbotAIConfig.enabled)
+            {
+                ChatHandler(player->GetSession()).SendSysMessage("|cff00ff00Playerbots:|r Random bots are disabled.");
             }
         }
     }
@@ -380,6 +385,7 @@ public:
     {
         PlayerbotWorldThreadProcessor::instance().Update(diff);
         sRandomPlayerbotMgr.UpdateAI(diff);  // World thread only
+        sCityBotMgr.Update(diff);
     }
 };
 

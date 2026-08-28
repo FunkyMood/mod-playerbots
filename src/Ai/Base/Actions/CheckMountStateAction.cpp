@@ -8,6 +8,7 @@
 #include "BattleGroundTactics.h"
 #include "BattlegroundEY.h"
 #include "BattlegroundWS.h"
+#include "CityBotMgr.h"
 #include "DBCStores.h"
 #include "Event.h"
 #include "PlayerbotAI.h"
@@ -148,6 +149,8 @@ bool CheckMountStateAction::Execute(Event /*event*/)
 
 bool CheckMountStateAction::isUseful()
 {
+    if (sCityBotMgr.IsInCity(bot))
+        return false;
     // Not useful when:
     if (botAI->IsInVehicle() || bot->isDead() || bot->HasUnitState(UNIT_STATE_IN_FLIGHT) ||
         !bot->IsOutdoors() || bot->InArena())

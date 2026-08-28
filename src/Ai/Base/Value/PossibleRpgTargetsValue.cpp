@@ -4,6 +4,7 @@
  */
 
 #include "PossibleRpgTargetsValue.h"
+#include "CityBotMgr.h"
 
 #include "CellImpl.h"
 #include "GridNotifiers.h"
@@ -65,6 +66,9 @@ bool PossibleRpgTargetsValue::AcceptUnit(Unit* unit)
         return false;
 
     if (unit->HasNpcFlag(UNIT_NPC_FLAG_SPIRITHEALER))
+        return false;
+
+    if (!sCityBotMgr.IsTargetAllowed(bot, unit))
         return false;
 
     for (uint32 npcFlag : allowedNpcFlags)
@@ -165,6 +169,9 @@ bool PossibleNewRpgTargetsValue::AcceptUnit(Unit* unit)
         return false;
 
     if (unit->HasNpcFlag(UNIT_NPC_FLAG_SPIRITHEALER))
+        return false;
+
+    if (!sCityBotMgr.IsTargetAllowed(bot, unit))
         return false;
 
     for (uint32 npcFlag : allowedNpcFlags)

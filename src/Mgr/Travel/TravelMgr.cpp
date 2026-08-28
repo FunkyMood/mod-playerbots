@@ -4,6 +4,7 @@
  */
 
 #include "TravelMgr.h"
+#include "CityBotMgr.h"
 
 #include <iomanip>
 #include <numeric>
@@ -4497,6 +4498,12 @@ const std::vector<WorldLocation> TravelMgr::GetTravelHubs(Player* bot)
 
 std::vector<WorldLocation> TravelMgr::GetCityLocations(Player* bot)
 {
+    if (sPlayerbotAIConfig.enableCityLife)
+    {
+        WorldLocation location;
+        if (sCityBotMgr.SelectHub(bot, location))
+            return { location };
+    }
     uint32 level = bot->GetLevel();
 
     std::vector<WorldLocation> fallbackLocations;

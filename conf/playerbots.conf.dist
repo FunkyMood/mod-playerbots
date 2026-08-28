@@ -1234,6 +1234,26 @@ AiPlayerbot.TeleToSilvermoonCityWeight = 1
 AiPlayerbot.TeleToShattrathCityWeight = 1
 AiPlayerbot.TeleToDalaranWeight = 1
 
+# Keep random bots distributed across service-NPC hubs in faction capitals.
+# Bots in a party leave this city behavior and follow their group normally.
+AiPlayerbot.CityLife.Enabled = 0
+AiPlayerbot.CityLife.HubRadius = 180.0
+AiPlayerbot.CityLife.HubCapacity = 2
+AiPlayerbot.CityLife.ReturnDelay = 30
+AiPlayerbot.CityLife.UpdateInterval = 10
+# Chance evaluated per CityLife update for a non-verbal city emote.
+AiPlayerbot.CityLife.EmoteChance = 20
+# Chance a bot walks instead of runs while it is assigned to a city hub.
+AiPlayerbot.CityLife.WalkChance = 50
+# Level window for the two neutral hubs, and the ceiling every other
+# capital stops being eligible past. Without CapitalMaxLevel a bot above
+# Shattrath's own range - or with Shattrath/Dalaran disabled - stays
+# eligible for its home capital and never gets routed onward.
+AiPlayerbot.CityLife.ShattrathMinLevel = 58
+AiPlayerbot.CityLife.ShattrathMaxLevel = 70
+AiPlayerbot.CityLife.DalaranMinLevel = 68
+AiPlayerbot.CityLife.CapitalMaxLevel = 60
+
 # How far randombots are teleported after death in yards
 AiPlayerbot.RandomBotTeleportDistance = 100
 

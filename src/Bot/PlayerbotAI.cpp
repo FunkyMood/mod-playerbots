@@ -13,6 +13,7 @@
 #include "AiFactory.h"
 #include "BudgetValues.h"
 #include "ChannelMgr.h"
+#include "CityBotMgr.h"
 #include "CharacterPackets.h"
 #include "ChatHelper.h"
 #include "CheckMountStateAction.h"
@@ -1535,14 +1536,20 @@ void PlayerbotAI::DoNextAction(bool min)
     else if (bot->isAFK())
         bot->ToggleAFK();
 
+    bool const cityLifeControlsWalk =
+        sPlayerbotAIConfig.enableCityLife && !bot->GetGroup() && sCityBotMgr.IsInCity(bot);
+
     if (master && master->IsInWorld())
     {
         float distance = ServerFacade::instance().GetDistance2d(bot, master);
 
-        if (master->m_movementInfo.HasMovementFlag(MOVEMENTFLAG_WALKING) && distance < 20.0f)
-            bot->m_movementInfo.AddMovementFlag(MOVEMENTFLAG_WALKING);
-        else
-            bot->m_movementInfo.RemoveMovementFlag(MOVEMENTFLAG_WALKING);
+        if (!cityLifeControlsWalk)
+        {
+            if (master->m_movementInfo.HasMovementFlag(MOVEMENTFLAG_WALKING) && distance < 20.0f)
+                bot->m_movementInfo.AddMovementFlag(MOVEMENTFLAG_WALKING);
+            else
+                bot->m_movementInfo.RemoveMovementFlag(MOVEMENTFLAG_WALKING);
+        }
 
         if (master->IsSitState() && nextAICheckDelay < 1000)
         {
@@ -1552,7 +1559,7 @@ void PlayerbotAI::DoNextAction(bool min)
         else if (nextAICheckDelay < 1000)
             bot->SetStandState(UNIT_STAND_STATE_STAND);
     }
-    else if (bot->m_movementInfo.HasMovementFlag(MOVEMENTFLAG_WALKING))
+    else if (!cityLifeControlsWalk && bot->m_movementInfo.HasMovementFlag(MOVEMENTFLAG_WALKING))
         bot->m_movementInfo.RemoveMovementFlag(MOVEMENTFLAG_WALKING);
     else if ((nextAICheckDelay < 1000) && bot->IsSitState())
         bot->SetStandState(UNIT_STAND_STATE_STAND);
@@ -1832,6 +1839,8 @@ bool PlayerbotAI::PlaySound(uint32 emote)
 
 bool PlayerbotAI::PlayEmote(uint32 emote)
 {
+    if (bot->GetGroup())
+        return false;
     WorldPacket data(SMSG_TEXT_EMOTE);
     data << (TextEmotes)emote;
     data << EmoteAction::GetNumberOfEmoteVariants((TextEmotes)emote, bot->getRace(), bot->getGender());

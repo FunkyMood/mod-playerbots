@@ -129,6 +129,17 @@ public:
     int weightTeleToSilvermoonCity;
     int weightTeleToShattrathCity;
     int weightTeleToDalaran;
+    bool enableCityLife;
+    float cityLifeHubRadius;
+    uint32 cityLifeHubCapacity;
+    uint32 cityLifeReturnDelay;
+    uint32 cityLifeUpdateInterval;
+    uint32 cityLifeEmoteChance;
+    uint32 cityLifeWalkChance;
+    uint32 cityLifeShattrathMinLevel;
+    uint32 cityLifeShattrathMaxLevel;
+    uint32 cityLifeDalaranMinLevel;
+    uint32 cityLifeCapitalMaxLevel;
     std::vector<uint32> randomBotMaps;
     std::vector<uint32> randomBotQuestItems;
     std::vector<uint32> randomBotAccounts;

@@ -32,6 +32,11 @@ bool TradeStatusAction::Execute(Event event)
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
                          "trade_busy_now", "I'm kind of busy now", {}),
                      LANG_UNIVERSAL, trader);
+
+        WorldPacket packet;
+        uint32 status = 0;
+        packet << status;
+        bot->GetSession()->HandleCancelTradeOpcode(packet);
         return false;
     }
 
@@ -40,6 +45,11 @@ bool TradeStatusAction::Execute(Event event)
         bot->Whisper(PlayerbotTextMgr::instance().GetBotTextOrDefault(
                          "trade_disabled", "Trading is disabled", {}),
                      LANG_UNIVERSAL, trader);
+
+        WorldPacket packet;
+        uint32 status = 0;
+        packet << status;
+        bot->GetSession()->HandleCancelTradeOpcode(packet);
         return false;
     }
 

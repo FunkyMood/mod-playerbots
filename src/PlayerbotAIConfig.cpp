@@ -4,6 +4,7 @@
  */
 
 #include "PlayerbotAIConfig.h"
+#include <algorithm>
 #include <iostream>
 #include "BisListMgr.h"
 #include "Config.h"
@@ -183,6 +184,17 @@ bool PlayerbotAIConfig::Initialize()
     weightTeleToSilvermoonCity = sConfigMgr->GetOption<int>("AiPlayerbot.TeleToSilvermoonCityWeight", 1);
     weightTeleToShattrathCity = sConfigMgr->GetOption<int>("AiPlayerbot.TeleToShattrathCityWeight", 1);
     weightTeleToDalaran = sConfigMgr->GetOption<int>("AiPlayerbot.TeleToDalaranWeight", 1);
+    enableCityLife = sConfigMgr->GetOption<bool>("AiPlayerbot.CityLife.Enabled", false);
+    cityLifeHubRadius = sConfigMgr->GetOption<float>("AiPlayerbot.CityLife.HubRadius", 180.0f);
+    cityLifeHubCapacity = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.HubCapacity", 2);
+    cityLifeReturnDelay = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.ReturnDelay", 30);
+    cityLifeUpdateInterval = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.UpdateInterval", 10);
+    cityLifeEmoteChance = std::min<uint32>(100, sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.EmoteChance", 20));
+    cityLifeWalkChance = std::min<uint32>(100, sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.WalkChance", 50));
+    cityLifeShattrathMinLevel = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.ShattrathMinLevel", 58);
+    cityLifeShattrathMaxLevel = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.ShattrathMaxLevel", 70);
+    cityLifeDalaranMinLevel = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.DalaranMinLevel", 68);
+    cityLifeCapitalMaxLevel = sConfigMgr->GetOption<uint32>("AiPlayerbot.CityLife.CapitalMaxLevel", 60);
     LoadList<std::vector<uint32>>(
         sConfigMgr->GetOption<std::string>("AiPlayerbot.RandomBotQuestItems",
                                            "5175,5176,5177,5178,6948,11000,12382,13704,16309"),

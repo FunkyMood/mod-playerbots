@@ -44,6 +44,7 @@ struct BattlegroundInfo
 };
 
 class ChatHandler;
+class CityBotMgr;
 class PerfMonitorOperation;
 class WorldLocation;
 
@@ -176,6 +177,8 @@ protected:
     void OnBotLoginInternal(Player* const bot) override;
 
 private:
+    friend class CityBotMgr;
+
     RandomPlayerbotMgr() : PlayerbotHolder(), processTicks(0)
     {
         this->playersLevel = sPlayerbotAIConfig.randombotStartingLevel;

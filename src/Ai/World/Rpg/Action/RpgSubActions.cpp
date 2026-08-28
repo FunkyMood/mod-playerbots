@@ -114,7 +114,7 @@ bool RpgStayAction::Execute(Event /*event*/)
     return true;
 }
 
-bool RpgWorkAction::isUseful() { return rpg->InRange() && !botAI->HasRealPlayerMaster(); }
+bool RpgWorkAction::isUseful() { return rpg->InRange() && !bot->GetGroup() && !botAI->HasRealPlayerMaster(); }
 
 bool RpgWorkAction::Execute(Event /*event*/)
 {
@@ -123,7 +123,7 @@ bool RpgWorkAction::Execute(Event /*event*/)
     return true;
 }
 
-bool RpgEmoteAction::isUseful() { return rpg->InRange() && !botAI->HasRealPlayerMaster(); }
+bool RpgEmoteAction::isUseful() { return rpg->InRange() && !bot->GetGroup() && !botAI->HasRealPlayerMaster(); }
 
 bool RpgEmoteAction::Execute(Event /*event*/)
 {

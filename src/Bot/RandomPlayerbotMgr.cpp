@@ -2078,7 +2078,12 @@ void RandomPlayerbotMgr::Refresh(Player* bot)
 
     bot->DurabilityRepairAll(false, 1.0f, false);
     bot->SetFullHealth();
-    bot->SetPvP(sWorld->IsPvPRealm());
+    // LOCAL CHANGE - randombots are always PvP flagged, rather than copying
+    // the realm type. This realm stays a normal (non-PvP) realm so that world
+    // PvP is opt-in: a player who has not raised their own flag cannot be
+    // touched. But with bots unflagged there was nobody for those who opt in
+    // to fight, which left the whole thing empty.
+    bot->SetPvP(true);
     PlayerbotFactory factory(bot, bot->GetLevel());
     factory.Refresh();
 
@@ -2644,7 +2649,12 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
     {
         // ObjectGuid::LowType guid = player->GetGUID().GetCounter(); //not used, conditional could be rewritten for
         // simplicity. line marked for removal.
-        player->SetPvP(sWorld->IsPvPRealm());
+        // LOCAL CHANGE - randombots are always PvP flagged, rather than copying
+        // the realm type. This realm stays a normal (non-PvP) realm so that world
+        // PvP is opt-in: a player who has not raised their own flag cannot be
+        // touched. But with bots unflagged there was nobody for those who opt in
+        // to fight, which left the whole thing empty.
+        player->SetPvP(true);
     }
     else
     {
