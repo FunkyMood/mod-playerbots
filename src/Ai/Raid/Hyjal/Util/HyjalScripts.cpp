@@ -1,20 +1,22 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
-#include "HyjalHelpers.h"
 #include "AllCreatureScript.h"
+#include "DynamicObjectScript.h"
+#include "EncounterHelpers.h"
+#include "HyjalHelpers.h"
 #include "ObjectAccessor.h"
 #include "Player.h"
-#include "RaidBossHelpers.h"
-#include "DynamicObjectScript.h"
 #include "Playerbots.h"
 #include "ScriptMgr.h"
 #include "Spell.h"
 #include "Timer.h"
 
 using namespace HyjalSummitHelpers;
+using namespace EncounterHelpers;
 
 static Player* GetFirstPlayerSpellTarget(Spell* spell, Unit* caster)
 {
@@ -39,7 +41,7 @@ static bool ShouldInterruptForArchimondeAirBurst(PlayerbotAI* botAI, Player* bot
     if (!target)
         return false;
 
-    Player* mainTank = GetGroupMainTank(botAI, bot);
+    Player* mainTank = GetGroupMainTank(bot);
     if (!mainTank || bot == mainTank)
         return false;
 

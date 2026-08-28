@@ -1,17 +1,17 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #ifndef PLAYERBOTS_PLAYERBOTFACTORY_H
 #define PLAYERBOTS_PLAYERBOTFACTORY_H
 
-#include <string>
-#include <utility>
-
 #include "InventoryAction.h"
 #include "Player.h"
 #include "PlayerbotAI.h"
+#include <string>
+#include <utility>
 
 class Item;
 
@@ -73,6 +73,9 @@ public:
     void InitPet();
     void InitAmmo();
     static uint32 CalcMixedGearScore(uint32 gs, uint32 quality);
+    static void DestroyEquippedGear(Player* bot);
+    static void AutoGear(Player* bot, uint32 itemQuality, uint32 ilvl, bool incremental, bool secondChance = false,
+                        bool applyFinishers = true);
     void InitPetTalents();
     void CleanupConsumables();
     void InitReagents();
@@ -202,7 +205,6 @@ private:
     void InitInventoryEquip();
     void InitInventorySkill();
     Item* StoreItem(uint32 itemId, uint32 count);
-    void InitArenaTeam();
     void InitImmersive();
     static void AddPrevQuests(uint32 questId, std::list<uint32>& questIds);
     void LoadEnchantContainer();

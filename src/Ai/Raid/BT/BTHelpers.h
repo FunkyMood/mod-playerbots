@@ -1,20 +1,20 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #ifndef PLAYERBOTS_BTHELPERS_H
 #define PLAYERBOTS_BTHELPERS_H
 
+#include "Common.h"
+#include "ObjectGuid.h"
+#include "Position.h"
 #include <array>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
-#include "Common.h"
-#include "ObjectGuid.h"
-#include "Position.h"
 
 class GameObject;
 class Player;

@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #ifndef PLAYERBOTS_ENGINE_H
 #define PLAYERBOTS_ENGINE_H
-
-#include <map>
 
 #include "Multiplier.h"
 #include "PlayerbotAIAware.h"
 #include "Queue.h"
 #include "Strategy.h"
 #include "Trigger.h"
+#include <map>
 
 class Action;
 class ActionNode;
@@ -86,6 +86,7 @@ public:
 
     void removeActionExecutionListener(ActionExecutionListener* listener) { actionExecutionListeners.Remove(listener); }
     bool HasStrategyType(StrategyType type) { return strategyTypeMask & type; }
+    bool HasTargetExclusions() const { return hasTargetExclusions; }
     virtual ~Engine(void);
 
     bool testMode;
@@ -115,6 +116,7 @@ protected:
     float lastRelevance;
     std::string lastAction;
     uint32 strategyTypeMask;
+    bool hasTargetExclusions = false;
     NamedObjectFactoryList<ActionNode> actionNodeFactories;
 };
 

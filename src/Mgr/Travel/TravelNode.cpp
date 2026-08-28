@@ -1,20 +1,19 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "TravelNode.h"
-
-#include <iomanip>
-#include <regex>
-#include <unordered_set>
-
 #include "BudgetValues.h"
 #include "PathGenerator.h"
 #include "Playerbots.h"
 #include "RaceMgr.h"
 #include "ServerFacade.h"
 #include "TransportMgr.h"
+#include <iomanip>
+#include <regex>
+#include <unordered_set>
 
 // TravelNodePath(float distance = 0.1f, float extraCost = 0, TravelNodePathType pathType = TravelNodePathType::walk,
 // uint32 pathObject = 0, bool calculated = false, std::vector<uint8> maxLevelCreature = { 0,0,0 }, float swimDistance =

@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "ItemUsageValue.h"
-
 #include "AiFactory.h"
 #include "ChatHelper.h"
 #include "GuildTaskMgr.h"
@@ -29,7 +29,7 @@ ItemUsage ItemUsageValue::Calculate()
     if (!proto)
         return ITEM_USAGE_NONE;
 
-    if (botAI->HasActivePlayerMaster())
+    if (IsRealPlayer(botAI->GetMaster()))
     {
         if (IsItemUsefulForSkill(proto) || IsItemNeededForSkill(proto))
             return ITEM_USAGE_SKILL;
@@ -116,7 +116,6 @@ ItemUsage ItemUsageValue::Calculate()
     }
 
     Player* master = botAI->GetMaster();
-    bool isSelfBot = (master == bot);
     bool botNeedsItemForQuest = IsItemUsefulForQuest(bot, proto);
     bool masterNeedsItemForQuest = master && sPlayerbotAIConfig.syncQuestWithPlayer && IsItemUsefulForQuest(master, proto);
 
@@ -133,8 +132,8 @@ ItemUsage ItemUsageValue::Calculate()
     if (isLootFromItem && botNeedsItemForQuest)
         return ITEM_USAGE_QUEST;
 
-    // If the bot is NOT acting alone and the master needs this quest item, defer to the master
-    if (!isSelfBot && masterNeedsItemForQuest)
+    // If this is not a selfbot acting alone and the master needs this quest item, defer to the master
+    if (!IsSelfBot(bot) && masterNeedsItemForQuest)
         return ITEM_USAGE_NONE;
 
     // If the bot itself needs the item for a quest, allow looting

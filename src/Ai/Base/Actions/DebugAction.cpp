@@ -1,17 +1,17 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "DebugAction.h"
-
 #include "ChooseTravelTargetAction.h"
 #include "MapMgr.h"
-#include "TravelMgr.h"
 #include "Player.h"
 #include "PlayerbotAI.h"
-#include "SpellMgr.h"
 #include "Spell.h"
+#include "SpellMgr.h"
+#include "TravelMgr.h"
 
 bool DebugAction::Execute(Event event)
 {

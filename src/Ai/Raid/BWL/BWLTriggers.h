@@ -1,3 +1,9 @@
+/*
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
+ */
+
 #ifndef PLAYERBOTS_BWLTRIGGERS_H
 #define PLAYERBOTS_BWLTRIGGERS_H
 
@@ -9,6 +15,31 @@ class BwlSuppressionDeviceTrigger : public Trigger
 {
 public:
     BwlSuppressionDeviceTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bwl suppression device") {}
+    bool IsActive() override;
+};
+
+// Razorgore the Untamed
+
+class BwlRazorgoreNotMindControlledTrigger : public Trigger
+{
+public:
+    BwlRazorgoreNotMindControlledTrigger(PlayerbotAI* botAI, const std::string& name = "bwl razorgore not mind controlled") : Trigger(botAI, name) {}
+    bool IsActive() override;
+};
+
+// Vaelastrasz the Corrupt
+
+class BwlVaelastraszPositioningTrigger : public Trigger
+{
+public:
+    BwlVaelastraszPositioningTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bwl vaelastrasz positioning") {}
+    bool IsActive() override;
+};
+
+class BwlVaelastraszBurningAdrenalineTrigger : public Trigger
+{
+public:
+    BwlVaelastraszBurningAdrenalineTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bwl vaelastrasz burning adrenaline") {}
     bool IsActive() override;
 };
 

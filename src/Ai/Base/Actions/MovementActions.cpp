@@ -1,19 +1,13 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "MovementActions.h"
-
-#include <cmath>
-#include <cstdlib>
-#include <iomanip>
-#include <string>
-
 #include "Corpse.h"
 #include "Event.h"
 #include "FleeManager.h"
-#include "G3D/Vector3.h"
 #include "GameObject.h"
 #include "LastMovementValue.h"
 #include "LootObjectStack.h"
@@ -39,6 +33,11 @@
 #include "Unit.h"
 #include "Vehicle.h"
 #include "WaypointMovementGenerator.h"
+#include "G3D/Vector3.h"
+#include <cmath>
+#include <cstdlib>
+#include <iomanip>
+#include <string>
 
 MovementAction::MovementAction(PlayerbotAI* botAI, std::string const name) : Action(botAI, name)
 {
@@ -1021,14 +1020,11 @@ void MovementAction::UpdateMovementState()
     wasMovementRestricted = isCurrentlyRestricted;
 
     // Temporary speed increase in group
-    // if (botAI->HasRealPlayerMaster())
-    // {
+    // if (botAI->HasGameClientMaster())
     //     bot->SetSpeedRate(MOVE_RUN, 1.1f);
-    // }
     // else
-    // {
     //     bot->SetSpeedRate(MOVE_RUN, 1.0f);
-    // }
+
     // check if target is not reachable (from Vmangos)
     // if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType() == CHASE_MOTION_TYPE && bot->CanNotReachTarget() &&
     // !bot->InBattleground())
@@ -1116,7 +1112,7 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
         && ServerFacade::instance().IsDistanceLessOrEqualThan(ServerFacade::instance().GetDistance2d(bot, target->GetPositionX(),
     target->GetPositionY()), sPlayerbotAIConfig.sightDistance)
         && abs(bot->GetPositionZ() - target->GetPositionZ()) >= sPlayerbotAIConfig.spellDistance &&
-    botAI->HasRealPlayerMaster()
+    botAI->HasGameClientMaster()
         && (target->GetMapId() && bot->GetMapId() != target->GetMapId()))
     {
         bot->StopMoving();
@@ -1143,7 +1139,7 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
         return true;
     }
 
-    if (!IsMovingAllowed(target) && botAI->HasRealPlayerMaster())
+    if (!IsMovingAllowed(target) && botAI->HasGameClientMaster())
     {
         if ((target->GetMap() && target->GetMap()->IsBattlegroundOrArena()) || (bot->GetMap() &&
     bot->GetMap()->IsBattlegroundOrArena())) return false;

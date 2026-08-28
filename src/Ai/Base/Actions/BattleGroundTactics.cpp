@@ -1,12 +1,10 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "BattleGroundTactics.h"
-
-#include <algorithm>
-
 #include "ArenaTeam.h"
 #include "ArenaTeamMgr.h"
 #include "BattleGroundJoinAction.h"
@@ -32,6 +30,7 @@
 #include "PvpTriggers.h"
 #include "ServerFacade.h"
 #include "Vehicle.h"
+#include <algorithm>
 
 // common bg positions
 Position const WS_WAITING_POS_HORDE_1 = {944.981f, 1423.478f, 345.434f, 6.18f};

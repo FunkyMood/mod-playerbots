@@ -1,10 +1,10 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "UseItemAction.h"
-
 #include "ChatHelper.h"
 #include "Event.h"
 #include "ItemPackets.h"
@@ -145,7 +145,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget, Uni
 
     Player* master = GetMaster();
     if (!targetSelected && item->GetTemplate()->Class != ITEM_CLASS_CONSUMABLE && master &&
-        botAI->HasActivePlayerMaster() && !selfOnly)
+        IsRealPlayer(botAI->GetMaster()) && !selfOnly)
     {
         if (ObjectGuid masterSelection = master->GetTarget())
         {
@@ -447,7 +447,7 @@ bool UseRandomRecipe::Execute(Event /*event*/)
 
 bool UseRandomRecipe::isUseful()
 {
-    return !bot->IsInCombat() && !botAI->HasActivePlayerMaster() && !bot->InBattleground();
+    return !bot->IsInCombat() && !IsRealPlayer(botAI->GetMaster()) && !bot->InBattleground();
 }
 
 bool UseRandomRecipe::isPossible() { return AI_VALUE2(uint32, "item count", "recipe") > 0; }
@@ -492,7 +492,7 @@ bool UseRandomQuestItem::Execute(Event /*event*/)
 
 bool UseRandomQuestItem::isUseful()
 {
-    return !botAI->HasActivePlayerMaster() && !bot->InBattleground() && !bot->HasUnitState(UNIT_STATE_IN_FLIGHT);
+    return !IsRealPlayer(botAI->GetMaster()) && !bot->InBattleground() && !bot->HasUnitState(UNIT_STATE_IN_FLIGHT);
 }
 
 bool UseRandomQuestItem::isPossible() { return AI_VALUE2(uint32, "item count", "quest") > 0; }

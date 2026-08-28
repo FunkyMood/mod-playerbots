@@ -1,19 +1,18 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "PossibleRpgTargetsValue.h"
-#include "CityBotMgr.h"
-
 #include "CellImpl.h"
 #include "GridNotifiers.h"
 #include "GridNotifiersImpl.h"
+#include "NearestGameObjects.h"
 #include "ObjectGuid.h"
 #include "Playerbots.h"
 #include "ServerFacade.h"
 #include "SharedDefines.h"
-#include "NearestGameObjects.h"
 #include <unordered_set>
 
 std::vector<uint32> PossibleRpgTargetsValue::allowedNpcFlags;
@@ -66,9 +65,6 @@ bool PossibleRpgTargetsValue::AcceptUnit(Unit* unit)
         return false;
 
     if (unit->HasNpcFlag(UNIT_NPC_FLAG_SPIRITHEALER))
-        return false;
-
-    if (!sCityBotMgr.IsTargetAllowed(bot, unit))
         return false;
 
     for (uint32 npcFlag : allowedNpcFlags)
@@ -169,9 +165,6 @@ bool PossibleNewRpgTargetsValue::AcceptUnit(Unit* unit)
         return false;
 
     if (unit->HasNpcFlag(UNIT_NPC_FLAG_SPIRITHEALER))
-        return false;
-
-    if (!sCityBotMgr.IsTargetAllowed(bot, unit))
         return false;
 
     for (uint32 npcFlag : allowedNpcFlags)

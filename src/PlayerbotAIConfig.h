@@ -1,21 +1,21 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #ifndef PLAYERBOTS_PLAYERBOTAICONFIG_H
 #define PLAYERBOTS_PLAYERBOTAICONFIG_H
 
-#include <mutex>
-#include <unordered_map>
-#include <set>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <string>
-
 #include "DBCEnums.h"
 #include "SharedDefines.h"
+#include <algorithm>
+#include <map>
+#include <mutex>
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 enum class BotCheatMask : uint32
 {
@@ -38,6 +38,13 @@ enum class HealingManaEfficiency : uint8
     HIGH = 8,
     VERY_HIGH = 16,
     SUPERIOR = 32
+};
+
+enum class ShowHideCosmetic : uint8
+{
+    ALWAYS_HIDE = 0,
+    ALWAYS_SHOW = 1,
+    RANDOMIZE = 2
 };
 
 enum class AutoPartyBuffMode : uint8
@@ -69,6 +76,14 @@ enum NewRpgStatus : int
 
 #define MAX_SPECNO 20
 
+// One level range/bucket used by the random bot level brackets sub-feature (see RandomBotLevelMgr).
+struct LevelBracketConfig
+{
+    uint8 lower = 1;
+    uint8 upper = 80;
+    uint8 pct = 0;
+};
+
 class PlayerbotAIConfig
 {
 public:
@@ -80,6 +95,7 @@ public:
     }
 
     bool Initialize();
+    void LoadRandomBotLevelConfig();
     bool IsInRandomAccountList(uint32 id);
     bool IsInRandomQuestItemList(uint32 id);
     bool IsPvpProhibited(uint32 zoneId, uint32 areaId);
@@ -105,6 +121,8 @@ public:
     AutoPartyBuffMode autoPartyBuffs;
     bool tellWhenMissingBuffReagents;
     uint32 missingBuffReagentMessageCooldown;
+    bool forceRebuffOnReadyCheck;
+    uint32 forceRebuffMarginSecs;
     bool autoAvoidAoe;
     float maxAoeAvoidRadius;
     std::set<uint32> aoeAvoidSpellWhitelist;
@@ -129,17 +147,6 @@ public:
     int weightTeleToSilvermoonCity;
     int weightTeleToShattrathCity;
     int weightTeleToDalaran;
-    bool enableCityLife;
-    float cityLifeHubRadius;
-    uint32 cityLifeHubCapacity;
-    uint32 cityLifeReturnDelay;
-    uint32 cityLifeUpdateInterval;
-    uint32 cityLifeEmoteChance;
-    uint32 cityLifeWalkChance;
-    uint32 cityLifeShattrathMinLevel;
-    uint32 cityLifeShattrathMaxLevel;
-    uint32 cityLifeDalaranMinLevel;
-    uint32 cityLifeCapitalMaxLevel;
     std::vector<uint32> randomBotMaps;
     std::vector<uint32> randomBotQuestItems;
     std::vector<uint32> randomBotAccounts;
@@ -163,6 +170,7 @@ public:
     uint32 permanentlyInWorldTime;
     uint32 minRandomBotPvpTime, maxRandomBotPvpTime;
     uint32 randomBotsPerInterval;
+    uint32 randomBotPrintStatsInterval;
     uint32 minRandomBotsPriceChangeInterval, maxRandomBotsPriceChangeInterval;
     uint32 disabledWithoutRealPlayerLoginDelay, disabledWithoutRealPlayerLogoutDelay;
     bool randomBotJoinLfg;
@@ -340,8 +348,8 @@ public:
     uint32 commandServerPort;
     bool perfMonEnabled;
     bool summonWhenGroup;
-    bool randomBotShowHelmet;
-    bool randomBotShowCloak;
+    ShowHideCosmetic randomBotShowHelmet;
+    ShowHideCosmetic randomBotShowCloak;
     bool randomBotFixedLevel;
     bool disableRandomLevels;
     float randomBotXPRate;
@@ -391,14 +399,12 @@ public:
     int32 enableRandomBotTrading;
     uint32 tweakValue;  // Debugging config
 
-    uint32 randomBotArenaTeamCount;
     uint32 randomBotArenaTeamMaxRating;
     uint32 randomBotArenaTeamMinRating;
     uint32 randomBotArenaTeam2v2Count;
     uint32 randomBotArenaTeam3v3Count;
     uint32 randomBotArenaTeam5v5Count;
     bool deleteRandomBotArenaTeams;
-    std::vector<uint32> randomBotArenaTeams;
 
     uint32 selfBotLevel;
     bool downgradeMaxLevelBot;
@@ -475,6 +481,37 @@ public:
     bool IsRestrictedHealerDPSMap(uint32 mapId) const;
 
     std::vector<uint32> excludedHunterPetFamilies;
+
+    // Random bot level brackets (periodic redistribution across per-faction level ranges). See
+    // RandomBotLevelMgr; percentages here are the as-configured values, not the runtime working copy.
+    bool levelBracketsEnabled;
+    uint32 levelBracketsCheckFrequency;
+    uint32 levelBracketsFlaggedCheckFrequency;
+    uint32 levelBracketsFlaggedProcessLimit;
+    bool levelBracketsIgnoreGuildWithRealPlayers;
+    bool levelBracketsIgnoreArenaTeamBots;
+    bool levelBracketsIgnoreFriendListed;
+    std::vector<std::string> levelBracketsExcludeNames;
+    uint8 levelBracketsNumRanges;
+    std::vector<LevelBracketConfig> levelBracketsAlliance;
+    std::vector<LevelBracketConfig> levelBracketsHorde;
+    bool levelBracketsDynamicDistribution;
+    float levelBracketsRealPlayerWeight;
+    bool levelBracketsSyncFactions;
+
+    // Random bot level reset (reset random bots reaching max level). See RandomBotLevelMgr.
+    bool resetBotLevelEnabled;
+    uint8 resetBotLevelMaxLevel;
+    uint8 resetBotLevelResetTo;
+    uint8 resetBotLevelSkipFrom;
+    uint8 resetBotLevelSkipTo;
+    uint8 resetBotLevelChance;
+    bool resetBotLevelScaledChance;
+    bool resetBotLevelRestrictTimePlayed;
+    uint32 resetBotLevelMinTimePlayed;
+    uint32 resetBotLevelPlayedTimeCheckFrequency;
+    bool resetBotLevelIgnoreGuildWithRealPlayers;
+    std::vector<std::string> resetBotLevelExcludeNames;
 
 private:
     PlayerbotAIConfig() = default;

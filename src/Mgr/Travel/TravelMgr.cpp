@@ -1,32 +1,30 @@
 /*
- * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license, you may redistribute it
- * and/or modify it under version 3 of the License, or (at your option), any later version.
+ * This file is part of the mod-playerbots module for AzerothCore. See AUTHORS file for Copyright
+ * information; released under GNU GPL v2 license, redistribute/modify under version 2 of the License,
+ * or (at your option) any later version.
  */
 
 #include "TravelMgr.h"
-#include "CityBotMgr.h"
-
-#include <iomanip>
-#include <numeric>
-
 #include "AreaDefines.h"
+#include "CellImpl.h"
+#include "ChatHelper.h"
+#include "Corpse.h"
 #include "Creature.h"
 #include "Log.h"
-#include "ObjectAccessor.h"
-#include "TravelNode.h"
-#include "Talentspec.h"
-#include "ChatHelper.h"
+#include "Map.h"
 #include "MapCollisionData.h"
 #include "MapMgr.h"
+#include "ObjectAccessor.h"
 #include "PathGenerator.h"
 #include "Playerbots.h"
 #include "RaceMgr.h"
+#include "Talentspec.h"
 #include "TransportMgr.h"
+#include "TravelNode.h"
 #include "VMapFactory.h"
 #include "VMapMgr2.h"
-#include "Map.h"
-#include "Corpse.h"
-#include "CellImpl.h"
+#include <iomanip>
+#include <numeric>
 
 // Navigation data
 
@@ -1068,7 +1066,7 @@ GuidPosition::GuidPosition(CreatureData const& creData)
 }
 
 GuidPosition::GuidPosition(GameObjectData const& goData)
-    : ObjectGuid(HighGuid::GameObject, goData.id),
+    : ObjectGuid(HighGuid::GameObject, goData.id, goData.spawnId),
       WorldPosition(goData.mapid, goData.posX, goData.posY, goData.posZ, goData.orientation)
 {
     loadedFromDB = true;
@@ -4498,12 +4496,6 @@ const std::vector<WorldLocation> TravelMgr::GetTravelHubs(Player* bot)
 
 std::vector<WorldLocation> TravelMgr::GetCityLocations(Player* bot)
 {
-    if (sPlayerbotAIConfig.enableCityLife)
-    {
-        WorldLocation location;
-        if (sCityBotMgr.SelectHub(bot, location))
-            return { location };
-    }
     uint32 level = bot->GetLevel();
 
     std::vector<WorldLocation> fallbackLocations;
