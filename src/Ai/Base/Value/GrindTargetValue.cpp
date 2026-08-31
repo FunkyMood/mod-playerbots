@@ -47,6 +47,13 @@ Unit* GrindTargetValue::FindTargetForGrinding(uint32 assistCount)
         return unit;
     }
 
+    // LOCAL CHANGE - a bot wandering on its own never picks a fight. Whatever
+    // is already attacking it was returned just above, so it still defends
+    // itself; it simply stops hunting. With a real player in its party the
+    // normal behaviour is restored, so it fights alongside whoever it follows.
+    if (!botAI->HasRealPlayerCompany())
+        return nullptr;
+
     GuidVector targets = *context->GetValue<GuidVector>("possible targets");
     if (targets.empty())
         return nullptr;

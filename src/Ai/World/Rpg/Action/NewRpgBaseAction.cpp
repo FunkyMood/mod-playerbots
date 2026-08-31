@@ -1214,6 +1214,15 @@ bool NewRpgBaseAction::CheckRpgStatusAvailable(NewRpgStatus status)
             return true;
         case RPG_WANDER_RANDOM:
         {
+            // LOCAL CHANGE - wandering is what keeps bots spread across the
+            // world, and it no longer implies hunting: a bot with no real
+            // player in its party returns no grind target at all (see
+            // GrindTargetValue). Still gating the state on one would make it
+            // unreachable for those bots and hand its weight to the states
+            // that head for towns and inns instead.
+            if (!botAI->HasRealPlayerCompany())
+                return true;
+
             Unit* target = AI_VALUE(Unit*, "grind target");
             return target != nullptr;
         }

@@ -4481,6 +4481,25 @@ bool PlayerbotAI::IsAltBot() { return HasGameClientMaster() && !sRandomPlayerbot
 // True when the bot's master is driven by a player with a game client: a regular player (no bot AI) or a selfbot player.
 bool PlayerbotAI::HasGameClientMaster() { return IsRealPlayer(master) || IsSelfBot(master); }
 
+bool PlayerbotAI::HasRealPlayerCompany()
+{
+    if (IsRealPlayer(master))
+        return true;
+
+    Group* group = bot->GetGroup();
+    if (!group)
+        return false;
+
+    for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
+    {
+        Player* member = ref->GetSource();
+        if (member && member != bot && IsRealPlayer(member))
+            return true;
+    }
+
+    return false;
+}
+
 Player* PlayerbotAI::GetGroupLeader()
 {
     if (!bot->InBattleground())

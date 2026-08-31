@@ -544,6 +544,10 @@ public:
     // Checks if the bot is summoned an altbot of a player
     bool IsAltBot();
     bool HasGameClientMaster();
+    // LOCAL CHANGE - true when an actual person is travelling with this bot,
+    // as its master or as a party member. Random bots on their own use it to
+    // hold back from starting fights.
+    bool HasRealPlayerCompany();
     Player* GetGroupLeader();
     uint32 GetFixedBotNumber(uint32 maxNum = 100);
     GrouperType GetGrouperType();
